@@ -143,16 +143,30 @@ function current_status(id, type, player) {
 var players = {};
 
 // Some fake players!
-// In Sidcup, Bexley and London
+// In Sidcup, Bexley and Chenies Street ;-)
+players[1] = {
+  id: 1,
+  score: 0,
+  lat: 51.429703, 
+  lon: 0.1073581
+};
+
+players[2] = {
+  id: 2,
+  score: 0,
+  lat: 51.4413546,
+  lon: 0.1486101
+};
+
+players[3] = {
+  id: 3,
+  score: 0,
+  lat: 51.5208186,
+  lon: -0.1328604
+};
 
 server = http.createServer(function(req, res){ 
-res.writeHead(200, {'Content-Type': 'text/html'}); 
-/* 
-res.writeHead(200, [ ["Content-Type", 'text/html'],
-                      ["Access-Control-Allow-Origin", '*']
-                    ]);  
-
-*/
+  res.writeHead(200, {'Content-Type': 'text/html'}); 
  res.write('<h1>bliss</h1>'); 
  res.close(); 
 });
