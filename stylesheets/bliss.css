@@ -1,0 +1,60 @@
+body {
+  background-image:url('../images/bg/hex-flip.jpg');
+  background-position: top left;
+  background-repeat: none;
+  color: #efefef;
+  font-size: 1.5em;
+  font-family: "tenby-five-1","tenby-five-2", tahoma, geneva, sans-serif;
+  height: auto;
+  width: auto;
+}
+div#logo, #txt {
+  font-size: 3em;
+  font-weight: bold;
+  text-shadow: 0px 0px 18px #fff;
+}
+#score {
+  color: #000;
+  font-size: 2em;
+  text-shadow: 0px 0px 5px #000;
+}
+#stats {
+  width: 256px;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0px 0px 24px #fff;
+  position: absolute;
+  bottom: 0;
+}
+#debug {
+  font-size: 0.5em;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.hex {
+  position: absolute;
+  top -9999px;
+  height: 256px;
+  width: 256px;
+  background-image:url('../images/tiles/blue-256.png');
+  filter:alpha(opacity=80);
+  -moz-opacity:0.8;
+  -khtml-opacity: 0.8;
+  opacity: 0.8;
+}
+.hex .score {
+  width: 256px;
+  font-weight: bold;
+  text-align: center;
+}
+#loading {
+  position: absolute;
+  top: 40px;
+  left: 150px;
+  height: 16px;
+  width: 16px;
+  background-image:url('../images/wheel-white.gif');
+}

@@ -1,0 +1,196 @@
+var sys = require("sys"),
+    fs = require("fs"),
+    path = require("path"),
+    http = require("http"),
+    io = require('socket.io');
+
+var pidfile = fs.openSync("/var/tmp/node.pid", "w");
+fs.writeSync(pidfile, process.pid + "");
+fs.closeSync(pidfile);
+
+var nearest = require(__dirname + '/lib/nearest');
+
+var sys = require("sys");
+
+/*
+var client = require(__dirname + '/lib/redis-client').createClient();
+client.info(function (err, info) {
+    if (err) throw new Error(err);
+    sys.puts("Redis Version is: " + info.redis_version);
+    client.close();
+});
+*/
+
+function log(msg) {
+  sys.puts(msg.toString());
+};
+
+Array.prototype.contains = function(obj) {
+  var i = this.length;
+  while (i--) {
+    if (this[i] === obj) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Array.prototype.remove = function (subject) {
+  var r = new Array();
+  for(var i = 0, n = this.length; i < n; i++)
+  {
+    if(!(this[i] === subject))
+    {
+      r[r.length] = this[i];
+    }
+  }
+  return r;
+}
+
+function handleEvent(id, type, message, client) {
+  log("<"+id+"> handling " + type);
+  if (type == 'location') {
+    return handleLocation(id, message, client);
+  } else if (type == 'connection') {
+    return handleConnection(id, message);
+  } else if (type == 'disconnection') {
+    return handleDisconnection(id, message);
+  } else if (type == 'stats') {
+    return handleStats(id, message);
+  } else {
+    return JSON.stringify({
+      error: "Don't know how to handle 'type'" + type,
+    });
+  }
+}
+
+function handleConnection(id, message) {
+  players[id] = {
+    id: id,
+    score: 0
+  }
+  return current_status(id, 'connection', players[id]);
+}
+
+function handleDisconnection(id, message) {
+  return current_status(id, 'disconnection', players[id])
+}
+
+function handleLocation(id, message, client) {
+  players[id] = {
+    id: id,
+    lat: message.lat,
+    lon: message.lon,
+  }
+
+  if (!players[id].score) {
+    players[id].score = 0;
+  }
+
+  outbreak(id, players, client)
+
+  return current_status(id, 'location', players);
+  //return current_status(id, 'location', players[id])
+}
+
+// Find the nearest neighbours and increase their score
+// Lather, rinse, repeat for each subsequent player over the threshold
+function outbreak(id, players, client, disrupt, threshold) {
+  disrupt = disrupt || 3
+  threshold = threshold || 3
+
+  players = nearest.create_geoHash(players);
+  nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
+  //sys.puts(JSON.stringify(nearby_players));
+  //sys.puts(nearby_players.length);
+
+  for (var i = 0; i < nearby_players.length; i++) {  
+    //sys.puts(JSON.stringify(nearby_players[i]));
+    player_id = nearby_players[i]['id']
+    players[player_id].score += 1;
+    client.send(player_id, current_status(player_id, 'score', players[player_id]));
+
+    if (players[player_id].score % threshold == 0) {
+      outbreak(player_id, players, client, disrupt, threshold);
+    }
+  }
+}
+
+function handleStats(id, message) {
+  var count = 0;
+  for (var player in players) {
+    count++;
+  }
+
+  var response = {
+    id: id,
+    type: 'stats',
+    players_online:  count
+  };
+  return JSON.stringify(response);
+}
+
+function current_status(id, type, player) {
+  var message = {
+    id: id,
+    type: type,
+    player: player
+  };
+
+  return JSON.stringify(message);
+}
+
+var players = {};
+
+// Some fake players!
+// In Sidcup, Bexley and London
+
+server = http.createServer(function(req, res){ 
+res.writeHead(200, {'Content-Type': 'text/html'}); 
+/* 
+res.writeHead(200, [ ["Content-Type", 'text/html'],
+                      ["Access-Control-Allow-Origin", '*']
+                    ]);  
+
+*/
+ res.write('<h1>bliss</h1>'); 
+ res.close(); 
+});
+
+var socket = io.listen(server);
+
+socket.on('connection', function(client) {
+  log("<"+client.sessionId+"> connected");
+  var response = handleEvent(client.sessionId, 'connection', false, client);
+  client.send(response);
+
+  var stats = handleEvent(client.sessionId, 'stats', false, client);
+  client.send(stats);
+  client.broadcast(stats);
+
+  client.on('message', function(evt) {
+    log("<"+client.sessionId+"> "+evt);
+
+    var message = JSON.parse(evt);
+    var response = handleEvent(client.sessionId, message['event_type'], message, client);
+    client.send(response);
+    client.broadcast(response);
+  })
+
+  client.on('disconnect', function() {
+    log("closed connection: " + client.sessionId);
+
+    var response = handleEvent(client.sessionId, 'disconnection');
+    client.broadcast(response);
+
+    var stats = handleEvent(client.sessionId, 'stats', false, client);
+    client.broadcast(stats);
+
+    // Trying to not delete in here, to see if that helps the iPhone xhr clients remain in play...
+    //delete players[client.sessionId]; // do it, do it now...
+
+    log("updated players: " + JSON.stringify(players));
+  }) 
+});
+
+server.listen(1975, "173.45.236.98");

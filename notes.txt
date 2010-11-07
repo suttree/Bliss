@@ -1,0 +1,10 @@
+= Installing Socket.IO = 
+  Using macman's branch of Socket.IO to allow for cross-domain requests from bliss.troisen.com to bliss.troisen.com:8080
+
+  cd /tmp/
+  git clone http://github.com/maccman/Socket.IO-node.git
+  cd Socket.IO-node/
+  git submodule init
+  git submodule update
+  npm uninstall socket-io
+  npm install .
