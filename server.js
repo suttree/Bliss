@@ -142,8 +142,7 @@ function current_status(id, type, player) {
 
 var players = {};
 
-// Some fake players!
-// In Sidcup, Bexley and Chenies Street ;-)
+// Some fake players, in Sidcup, Bexley and Chenies Street ;-)
 players[1] = {
   id: 1,
   score: 0,
