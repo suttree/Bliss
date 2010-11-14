@@ -143,6 +143,7 @@ function current_status(id, type, player) {
 var players = {};
 
 // Some fake players, in Sidcup, Bexley and Chenies Street ;-)
+/*
 players[1] = {
   id: 1,
   score: 0,
@@ -162,6 +163,15 @@ players[3] = {
   score: 0,
   lat: 51.5208186,
   lon: -0.1328604
+};
+*/
+
+// Dartford station
+players[4] = {
+  id: 4,
+  score: 0,
+  lat: 51.44737,
+  lon: 0.21926
 };
 
 server = http.createServer(function(req, res){ 
@@ -199,8 +209,7 @@ socket.on('connection', function(client) {
     var stats = handleEvent(client.sessionId, 'stats', false, client);
     client.broadcast(stats);
 
-    // Trying to not delete in here, to see if that helps the iPhone xhr clients remain in play...
-    //delete players[client.sessionId]; // do it, do it now...
+    delete players[client.sessionId]; // do it, do it now...
 
     log("updated players: " + JSON.stringify(players));
   }) 

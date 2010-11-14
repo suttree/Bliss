@@ -58,3 +58,13 @@ div#logo, #txt {
   width: 16px;
   background-image:url('../images/wheel-white.gif');
 }
+.dot {
+  border: 1px solid yellow;
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.player1 {
+  border: 2px solid orange;
+}
