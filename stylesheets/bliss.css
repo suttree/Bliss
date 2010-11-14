@@ -49,6 +49,8 @@ div#logo, #txt {
   width: 256px;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 50px;
+  border: 1px solid red;
 }
 #loading {
   position: absolute;
