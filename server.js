@@ -142,36 +142,20 @@ function current_status(id, type, player) {
 
 var players = {};
 
-// Some fake players, in Sidcup, Bexley and Chenies Street ;-)
-/*
-players[1] = {
-  id: 1,
-  score: 0,
-  lat: 51.429703, 
-  lon: 0.1073581
-};
-
-players[2] = {
-  id: 2,
-  score: 0,
-  lat: 51.4413546,
-  lon: 0.1486101
-};
-
-players[3] = {
-  id: 3,
-  score: 0,
-  lat: 51.5208186,
-  lon: -0.1328604
-};
-*/
-
-// Dartford station
+// A fake player at Dartford station
 players[4] = {
   id: 4,
   score: 0,
   lat: 51.44737,
   lon: 0.21926
+};
+
+// A fake player at Angel station
+players[5] = {
+  id: 5,
+  score: 0,
+  lat: 51.5324989, 
+  lon: -0.1057899
 };
 
 server = http.createServer(function(req, res){ 
