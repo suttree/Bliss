@@ -190,10 +190,10 @@ socket.on('connection', function(client) {
     var response = handleEvent(client.sessionId, 'disconnection');
     client.broadcast(response);
 
+    delete players[client.sessionId]; // do it, do it now...
+
     var stats = handleEvent(client.sessionId, 'stats', false, client);
     client.broadcast(stats);
-
-    delete players[client.sessionId]; // do it, do it now...
 
     log("updated players: " + JSON.stringify(players));
   }) 
