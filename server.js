@@ -90,7 +90,6 @@ function handleLocation(id, message, client) {
   outbreak(id, players, client)
 
   return current_status(id, 'location', players);
-  //return current_status(id, 'location', players[id])
 }
 
 // Find the nearest neighbours and increase their score
@@ -101,13 +100,14 @@ function outbreak(id, players, client, disrupt, threshold) {
 
   players = nearest.create_geoHash(players);
   nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
-  //sys.puts(JSON.stringify(nearby_players));
-  //sys.puts(nearby_players.length);
+  sys.puts(JSON.stringify(nearby_players));
+  sys.puts(nearby_players.length);
 
   for (var i = 0; i < nearby_players.length; i++) {  
-    //sys.puts(JSON.stringify(nearby_players[i]));
     player_id = nearby_players[i]['id']
     players[player_id].score += 1;
+    sys.puts(JSON.stringify(nearby_players[i]));
+    sys.puts(current_status(player_id, 'score', players[player_id]));
     client.send(player_id, current_status(player_id, 'score', players[player_id]));
 
     if (players[player_id].score % threshold == 0) {
