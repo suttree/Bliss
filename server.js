@@ -106,7 +106,7 @@ function outbreak(id, players, client, disrupt, threshold) {
   for (var i = 0; i < nearby_players.length; i++) {  
     player_id = nearby_players[i]['id']
     players[player_id].score += 1;
-    client.send(player_id, current_status(player_id, 'score', players[player_id]));
+    client.send(current_status(player_id, 'score', players[player_id]));
 
     if (players[player_id].score % threshold == 0) {
       outbreak(player_id, players, client, disrupt, threshold);
