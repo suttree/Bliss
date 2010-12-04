@@ -4,7 +4,8 @@ var sys = require("sys"),
     http = require("http"),
     io = require('socket.io');
 
-var pidfile = fs.openSync("/var/tmp/node.pid", "w");
+var node_env = (process.argv[2] == 'staging' ? 'staging' : 'production');
+var pidfile = fs.openSync("/var/tmp/node-" + node_env + ".pid", "w");
 fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
