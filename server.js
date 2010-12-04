@@ -5,6 +5,8 @@ var sys = require("sys"),
     io = require('socket.io');
 
 var node_env = (process.argv[2] == 'staging' ? 'staging' : 'production');
+var node_port = (node_env == 'staging' ? '9999' : '1975');
+
 var pidfile = fs.openSync("/var/tmp/node-" + node_env + ".pid", "w");
 fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
@@ -188,4 +190,4 @@ socket.on('connection', function(client) {
   }) 
 });
 
-server.listen(1975, "173.45.236.98");
+server.listen(node_port, "173.45.236.98");
