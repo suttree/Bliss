@@ -10,17 +10,7 @@ fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
 var nearest = require(__dirname + '/lib/nearest');
-
 var sys = require("sys");
-
-/*
-var client = require(__dirname + '/lib/redis-client').createClient();
-client.info(function (err, info) {
-    if (err) throw new Error(err);
-    sys.puts("Redis Version is: " + info.redis_version);
-    client.close();
-});
-*/
 
 function log(msg) {
   sys.puts(msg.toString());
