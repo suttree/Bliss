@@ -57,6 +57,8 @@ function handleEvent(id, type, message, client) {
     return handleDisconnection(id, message);
   } else if (type == 'stats') {
     return handleStats(id, message);
+  } else if (type == 'scores') {
+    return handleScores(id, message);
   } else {
     return JSON.stringify({
       error: "Don't know how to handle 'type'" + type,
@@ -88,6 +90,11 @@ function handleLocation(id, message, client) {
   }
 
   outbreak(id, players, client)
+
+  // Broadcast the new scores to all players {:id => {:id => id, :score => score}}
+  var scores = handleScores(id);
+  client.send(scores);
+  client.broadcast(scores);
 
   return current_status(id, 'location', players);
 }
@@ -126,6 +133,20 @@ function handleStats(id, message) {
     players_online:  count
   };
   return JSON.stringify(response);
+}
+
+function handleScores(id) {
+  var all_scores = {};
+  for (var player in players) {
+    all_scores[player.id] = {id: player.id, score: player.score}
+  }
+
+  var scores = {
+    id: id,
+    type: 'scores',
+    players: all_scores
+  }
+  return JSON.stringify(scores);
 }
 
 function current_status(id, type, player) {
