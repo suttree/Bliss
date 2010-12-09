@@ -1,0 +1,1 @@
+Move init.d scripts into this directory, then symlink them from /etc/init.d instead
