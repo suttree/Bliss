@@ -14,6 +14,25 @@ fs.closeSync(pidfile);
 var nlog = require(__dirname + '/lib/logging');
 var nearest = require(__dirname + '/lib/nearest');
 
+// From http://joshdulac.com/index.php/simple-node-js-logs/
+function access_log(request) {
+  var path = "access_log";
+  var now = new Date();
+  var dateAndTime = now.toUTCString();
+  stream = fs.createWriteStream(path, {
+    'flags': 'a+',
+    'encoding': 'utf8',
+    'mode': 0644
+  });
+
+  stream.write(dateAndTime + " ", 'utf8');
+  stream.write(request.connection.remoteAddress + ": ", 'utf8')
+  stream.write(request.method + " ", 'utf8')
+  stream.write(request.url + "\n", 'utf8');
+  stream.end();
+}
+
+
 Array.prototype.contains = function(obj) {
   var i = this.length;
   while (i--) {
@@ -169,8 +188,8 @@ players[5] = {
 
 server = http.createServer(function(req, res){ 
   res.writeHead(200, {'Content-Type': 'text/html'}); 
- res.write('<h1>bliss</h1>'); 
- res.close(); 
+  res.write('<h1>bliss</h1>'); 
+  res.close(); 
 });
 
 var socket = io.listen(server);
