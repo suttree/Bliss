@@ -36,6 +36,22 @@ Array.prototype.remove = function (subject) {
   return r;
 }
 
+function log(message) {
+  nlog.updateAccessLog(message);
+}
+
+function removePlayer(id) {
+  var len = players.labels.length;
+  for (var x = 0; x < len; x++) {
+    if (players.labels[x] === id && x > 0 && x < len - 1) {
+      players.labels.splice(x, 1);
+      players[id] = null;
+      delete this.sprites[id];
+      break;
+    }
+  }
+}
+
 function handleEvent(id, type, message, client) {
   nlog.updateAccessLog("<"+id+"> handling " + type);
 
@@ -57,6 +73,7 @@ function handleEvent(id, type, message, client) {
 }
 
 function handleConnection(id, message) {
+  players.labels.push(id);
   players[id] = {
     id: id,
     score: 0
@@ -99,15 +116,18 @@ function outbreak(id, players, client, disrupt, threshold) {
   nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
 
   nlog.updateAccessLog('Running outbreak for ' + id);
-  nlog.updateAccessLog('Nearby players hash:' + JSON.stringify(nearby_players));
-  nlog.updateAccessLog('Nearby players length:' + nearby_players.length);
+  nlog.updateAccessLog('Nearby players hash: ' + JSON.stringify(nearby_players));
+  nlog.updateAccessLog('Nearby players length: ' + nearby_players.length);
 
-  for (var i = 0; i < nearby_players.length; i++) {  
+  // Disrupt each of your neighbours
+  var len = nearby_players.length;
+  for (var i = 0; i < len; i++) {  
     player_id = nearby_players[i]['id']
     players[player_id].score += 1;
     client.send(current_status(player_id, 'score', players[player_id]));
 
-    if (players[player_id].score % threshold == 0) {
+    // Propagate out through the network if we have disrupted enough neighbours
+    if (len >= threshold) {
       nlog.updateAccessLog('Recursing into outbreak for ' + player_id);
       outbreak(player_id, players, client, disrupt, threshold);
     }
@@ -116,9 +136,13 @@ function outbreak(id, players, client, disrupt, threshold) {
 
 function handleStats(id, message) {
   var count = 0;
+  log(players.length);
+  log(players.size);
+  log(players.labels.length);
   for (var player in players) {
     count++;
   }
+  log(count);
 
   var response = {
     id: id,
@@ -152,9 +176,12 @@ function current_status(id, type, player) {
   return JSON.stringify(message);
 }
 
-var players = {};
+var players = {
+  labels: []
+};
 
 // A fake player at Dartford station
+players.labels.push(4);
 players[4] = {
   id: 4,
   score: 0,
@@ -163,6 +190,7 @@ players[4] = {
 };
 
 // A fake player at Angel station
+players.labels.push(5);
 players[5] = {
   id: 5,
   score: 0,
@@ -203,12 +231,12 @@ socket.on('connection', function(client) {
     var response = handleEvent(client.sessionId, 'disconnection');
     client.broadcast(response);
 
-    delete players[client.sessionId]; // do it, do it now...
+    removePlayer(client.sessionId);
 
     var stats = handleEvent(client.sessionId, 'stats', false, client);
     client.broadcast(stats);
 
-    nlog.updateAccessLog("updated players: " + JSON.stringify(players));
+    nlog.updateAccessLog('Updated players: ' + JSON.stringify(players));
   }) 
 });
 
