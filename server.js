@@ -14,25 +14,6 @@ fs.closeSync(pidfile);
 var nlog = require(__dirname + '/lib/logging');
 var nearest = require(__dirname + '/lib/nearest');
 
-// From http://joshdulac.com/index.php/simple-node-js-logs/
-function access_log(request) {
-  var path = "access_log";
-  var now = new Date();
-  var dateAndTime = now.toUTCString();
-  stream = fs.createWriteStream(path, {
-    'flags': 'a+',
-    'encoding': 'utf8',
-    'mode': 0644
-  });
-
-  stream.write(dateAndTime + " ", 'utf8');
-  stream.write(request.connection.remoteAddress + ": ", 'utf8')
-  stream.write(request.method + " ", 'utf8')
-  stream.write(request.url + "\n", 'utf8');
-  stream.end();
-}
-
-
 Array.prototype.contains = function(obj) {
   var i = this.length;
   while (i--) {
@@ -116,8 +97,10 @@ function outbreak(id, players, client, disrupt, threshold) {
 
   players = nearest.create_geoHash(players);
   nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
-  //sys.puts(JSON.stringify(nearby_players));
-  //sys.puts(nearby_players.length);
+
+  nlog.updateAccessLog('Running outbreak for ' + id);
+  nlog.updateAccessLog('Nearby players hash:' + JSON.stringify(nearby_players));
+  nlog.updateAccessLog('Nearby players length:' + nearby_players.length);
 
   for (var i = 0; i < nearby_players.length; i++) {  
     player_id = nearby_players[i]['id']
@@ -125,6 +108,7 @@ function outbreak(id, players, client, disrupt, threshold) {
     client.send(current_status(player_id, 'score', players[player_id]));
 
     if (players[player_id].score % threshold == 0) {
+      nlog.updateAccessLog('Recursing into outbreak for ' + player_id);
       outbreak(player_id, players, client, disrupt, threshold);
     }
   }
