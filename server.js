@@ -11,12 +11,8 @@ var pidfile = fs.openSync("/var/tmp/node-" + node_env + ".pid", "w");
 fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
+var nlog = require(__dirname + '/lib/logging');
 var nearest = require(__dirname + '/lib/nearest');
-var sys = require("sys");
-
-function log(msg) {
-  sys.puts(msg.toString());
-};
 
 Array.prototype.contains = function(obj) {
   var i = this.length;
@@ -41,7 +37,8 @@ Array.prototype.remove = function (subject) {
 }
 
 function handleEvent(id, type, message, client) {
-  log("<"+id+"> handling " + type);
+  nlog.updateAccessLog("<"+id+"> handling " + type);
+
   if (type == 'location') {
     return handleLocation(id, message, client);
   } else if (type == 'connection') {
@@ -179,7 +176,8 @@ server = http.createServer(function(req, res){
 var socket = io.listen(server);
 
 socket.on('connection', function(client) {
-  log("<"+client.sessionId+"> connected");
+  nlog.updateAccessLog("<"+client.sessionId+"> connected");
+
   var response = handleEvent(client.sessionId, 'connection', false, client);
   client.send(response);
 
@@ -188,7 +186,7 @@ socket.on('connection', function(client) {
   client.broadcast(stats);
 
   client.on('message', function(evt) {
-    log("<"+client.sessionId+"> "+evt);
+    nlog.updateAccessLog("<"+client.sessionId+"> "+evt);
 
     var message = JSON.parse(evt);
     var response = handleEvent(client.sessionId, message['event_type'], message, client);
@@ -197,7 +195,7 @@ socket.on('connection', function(client) {
   })
 
   client.on('disconnect', function() {
-    log("closed connection: " + client.sessionId);
+    nlog.updateAccessLog("closed connection: " + client.sessionId);
 
     var response = handleEvent(client.sessionId, 'disconnection');
     client.broadcast(response);
@@ -207,7 +205,7 @@ socket.on('connection', function(client) {
     var stats = handleEvent(client.sessionId, 'stats', false, client);
     client.broadcast(stats);
 
-    log("updated players: " + JSON.stringify(players));
+    nlog.updateAccessLog("updated players: " + JSON.stringify(players));
   }) 
 });
 
