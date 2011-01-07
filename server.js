@@ -14,28 +14,6 @@ fs.closeSync(pidfile);
 var nlog = require(__dirname + '/lib/logging');
 var nearest = require(__dirname + '/lib/nearest');
 
-Array.prototype.contains = function(obj) {
-  var i = this.length;
-  while (i--) {
-    if (this[i] === obj) {
-      return true;
-    }
-  }
-  return false;
-}
-
-Array.prototype.remove = function (subject) {
-  var r = new Array();
-  for(var i = 0, n = this.length; i < n; i++)
-  {
-    if(!(this[i] === subject))
-    {
-      r[r.length] = this[i];
-    }
-  }
-  return r;
-}
-
 function log(message) {
   nlog.updateAccessLog(message);
 }
@@ -53,7 +31,7 @@ function removePlayer(id) {
 }
 
 function handleEvent(id, type, message, client) {
-  nlog.updateAccessLog("<"+id+"> handling " + type);
+  log("<"+id+"> handling " + type);
 
   if (type == 'location') {
     return handleLocation(id, message, client);
@@ -115,9 +93,9 @@ function outbreak(id, players, client, disrupt, threshold) {
   players = nearest.create_geoHash(players);
   nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
 
-  nlog.updateAccessLog('Running outbreak for ' + id);
-  nlog.updateAccessLog('Nearby players hash: ' + JSON.stringify(nearby_players));
-  nlog.updateAccessLog('Nearby players length: ' + nearby_players.length);
+  log('Running outbreak for ' + id);
+  log('Nearby players hash: ' + JSON.stringify(nearby_players));
+  log('Nearby players length: ' + nearby_players.length);
 
   // Disrupt each of your neighbours
   var len = nearby_players.length;
@@ -128,33 +106,27 @@ function outbreak(id, players, client, disrupt, threshold) {
 
     // Propagate out through the network if we have disrupted enough neighbours
     if (len >= threshold) {
-      nlog.updateAccessLog('Recursing into outbreak for ' + player_id);
+      log('Recursing into outbreak for ' + player_id);
       outbreak(player_id, players, client, disrupt, threshold);
     }
   }
 }
 
 function handleStats(id, message) {
-  var count = 0;
-  log(players.length);
-  log(players.size);
-  log(players.labels.length);
-  for (var player in players) {
-    count++;
-  }
-  log(count);
-
   var response = {
     id: id,
     type: 'stats',
-    players_online:  count
+    players_online:  players.labels.length
   };
   return JSON.stringify(response);
 }
 
 function handleScores(id) {
   var all_scores = {};
-  for (var player in players) {
+  var len = players.labels.length;
+
+  for (var x = 0; x <len; x++) {
+    var player = players[players.labels[x]];
     all_scores[player.id] = {id: player.id, score: player.score}
   }
 
