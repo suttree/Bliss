@@ -106,8 +106,8 @@ function outbreak(id, players, client, disrupt, threshold) {
 
     // Propagate out through the network if we have disrupted enough neighbours
     if (len >= threshold) {
-      log('Recursing into outbreak for ' + player_id);
-      outbreak(player_id, players, client, disrupt, threshold);
+      log('Would recurse into outbreak for ' + player_id);
+      //outbreak(player_id, players, client, disrupt, threshold);
     }
   }
 }
@@ -169,6 +169,51 @@ players[5] = {
   lat: 51.5324989, 
   lon: -0.1057899
 };
+
+// Another fake player in The Island Queen, Islington
+players.labels.push(6);
+players[6] = {
+  id: 6,
+  score: 0,
+  lat: 51.53313578916992,
+  lon: -0.09823322296142578
+};
+
+// And another player at the Screen on the Green, Islington
+players.labels.push(7);
+players[7] = {
+  id: 7,
+  score: 0,
+  lat: 51.53649936111712,
+  lon: -0.10364055633544922
+};
+
+// Here's a player in Thirza Road, Dartford
+players.labels.push(8);
+players[8] = {
+  id: 8,
+  score: 0,
+  lat: 51.443923918816395, 
+  lon: 0.2287602424621582
+}
+
+// Here's a player in Kenyn Road, Dartford
+players.labels.push(9);
+players[9] = {
+  id: 9,
+  score: 0,
+  lat: 51.45162677603857, 
+  lon: 0.21438360214233398
+}
+
+// And one more in the M&S in Dartford
+players.labels.push(10);
+players[10] = {
+  id: 10,
+  score: 0,
+  lat: 51.44794935873729, 
+  lon: 0.21680831909179688
+}
 
 server = http.createServer(function(req, res){ 
   res.writeHead(200, {'Content-Type': 'text/html'}); 
