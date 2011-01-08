@@ -1,3 +1,4 @@
+Drop typekit
 Remove scores and blue hexagon
 Flash players when they join and when they are disrupted by check-ins
 
