@@ -41,8 +41,6 @@ function handleEvent(id, type, message, client) {
     return handleDisconnection(id, message);
   } else if (type == 'stats') {
     return handleStats(id, message);
-  } else if (type == 'scores') {
-    return handleScores(id, message);
   } else {
     return JSON.stringify({
       error: "Don't know how to handle 'type'" + type,
@@ -52,10 +50,7 @@ function handleEvent(id, type, message, client) {
 
 function handleConnection(id, message) {
   players.labels.push(id);
-  players[id] = {
-    id: id,
-    score: 0
-  }
+  players[id] = { id: id }
   return current_status(id, 'connection', players[id]);
 }
 
@@ -70,21 +65,12 @@ function handleLocation(id, message, client) {
     lon: message.lon,
   }
 
-  if (!players[id].score) {
-    players[id].score = 0;
-  }
-
   outbreak(id, players, client)
-
-  // Broadcast the new scores to all players {:id => {:id => id, :score => score}}
-  var scores = handleScores(id);
-  client.send(scores);
-  client.broadcast(scores);
 
   return current_status(id, 'location', players);
 }
 
-// Find the nearest neighbours and increase their score
+// Find the nearest neighbours
 // Lather, rinse, repeat for each subsequent player over the threshold
 function outbreak(id, players, client, disrupt, threshold) {
   disrupt = disrupt || 3
@@ -101,8 +87,7 @@ function outbreak(id, players, client, disrupt, threshold) {
   var len = nearby_players.length;
   for (var i = 0; i < len; i++) {  
     player_id = nearby_players[i]['id']
-    players[player_id].score += 1;
-    client.send(current_status(player_id, 'score', players[player_id]));
+    //client.send(current_status(player_id, 'score', players[player_id]));
 
     // Propagate out through the network if we have disrupted enough neighbours
     if (len >= threshold) {
@@ -119,23 +104,6 @@ function handleStats(id, message) {
     players_online:  players.labels.length
   };
   return JSON.stringify(response);
-}
-
-function handleScores(id) {
-  var all_scores = {};
-  var len = players.labels.length;
-
-  for (var x = 0; x <len; x++) {
-    var player = players[players.labels[x]];
-    all_scores[player.id] = {id: player.id, score: player.score}
-  }
-
-  var scores = {
-    id: id,
-    type: 'scores',
-    players: all_scores
-  }
-  return JSON.stringify(scores);
 }
 
 function current_status(id, type, player) {
@@ -156,7 +124,6 @@ var players = {
 players.labels.push(4);
 players[4] = {
   id: 4,
-  score: 0,
   lat: 51.44737,
   lon: 0.21926
 };
@@ -165,7 +132,6 @@ players[4] = {
 players.labels.push(5);
 players[5] = {
   id: 5,
-  score: 0,
   lat: 51.5324989, 
   lon: -0.1057899
 };
@@ -174,7 +140,6 @@ players[5] = {
 players.labels.push(6);
 players[6] = {
   id: 6,
-  score: 0,
   lat: 51.53313578916992,
   lon: -0.09823322296142578
 };
@@ -183,7 +148,6 @@ players[6] = {
 players.labels.push(7);
 players[7] = {
   id: 7,
-  score: 0,
   lat: 51.53649936111712,
   lon: -0.10364055633544922
 };
@@ -192,7 +156,6 @@ players[7] = {
 players.labels.push(8);
 players[8] = {
   id: 8,
-  score: 0,
   lat: 51.443923918816395, 
   lon: 0.2287602424621582
 }
@@ -201,7 +164,6 @@ players[8] = {
 players.labels.push(9);
 players[9] = {
   id: 9,
-  score: 0,
   lat: 51.45162677603857, 
   lon: 0.21438360214233398
 }
@@ -210,7 +172,6 @@ players[9] = {
 players.labels.push(10);
 players[10] = {
   id: 10,
-  score: 0,
   lat: 51.44794935873729, 
   lon: 0.21680831909179688
 }

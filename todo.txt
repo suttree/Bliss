@@ -1,6 +1,4 @@
-Players who leavea are removed from the map but not from the "x players online"
-- refreshing the page does the same
-Remove scores and blue hexagon
-Flash players when they join and when they are disrupted by check-ins
-Think musically!
+Draw lines between players as they join in
+Fix outbreaks
+Think musically
 Think about the iPhone port - phonegap, unity, etc?
