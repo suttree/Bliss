@@ -21,10 +21,10 @@ function log(message) {
 function removePlayer(id) {
   var len = players.labels.length;
   for (var x = 0; x < len; x++) {
-    if (players.labels[x] === id && x > 0 && x < len - 1) {
+    if (players.labels[x] === id && x > 0 && x < len) {
       players.labels.splice(x, 1);
       players[id] = null;
-      delete this.sprites[id];
+      delete players[id];
       break;
     }
   }
@@ -197,7 +197,7 @@ players[8] = {
   lon: 0.2287602424621582
 }
 
-// Here's a player in Kenyn Road, Dartford
+// Here's a player in Kenwyn Road, Dartford
 players.labels.push(9);
 players[9] = {
   id: 9,
@@ -224,7 +224,7 @@ server = http.createServer(function(req, res){
 var socket = io.listen(server);
 
 socket.on('connection', function(client) {
-  nlog.updateAccessLog("<"+client.sessionId+"> connected");
+  log("<"+client.sessionId+"> connected");
 
   var response = handleEvent(client.sessionId, 'connection', false, client);
   client.send(response);
@@ -234,7 +234,7 @@ socket.on('connection', function(client) {
   client.broadcast(stats);
 
   client.on('message', function(evt) {
-    nlog.updateAccessLog("<"+client.sessionId+"> "+evt);
+    log("<"+client.sessionId+"> "+evt);
 
     var message = JSON.parse(evt);
     var response = handleEvent(client.sessionId, message['event_type'], message, client);
@@ -243,17 +243,16 @@ socket.on('connection', function(client) {
   })
 
   client.on('disconnect', function() {
-    nlog.updateAccessLog("closed connection: " + client.sessionId);
+    log("closed connection: " + client.sessionId);
 
     var response = handleEvent(client.sessionId, 'disconnection');
-    client.broadcast(response);
-
     removePlayer(client.sessionId);
+    client.broadcast(response);
 
     var stats = handleEvent(client.sessionId, 'stats', false, client);
     client.broadcast(stats);
 
-    nlog.updateAccessLog('Updated players: ' + JSON.stringify(players));
+    log('Updated players: ' + JSON.stringify(players));
   }) 
 });
 
