@@ -1,4 +1,10 @@
+Differing shades of orange, and yellow for each dot
+The rigging idea, etc...
+- blinkenlights!
+
 Draw lines between players as they join in
+Make the player1 and dot class a tiny heaxagon/diamond with the blur effect behind it
+
 Fix outbreaks
 Think musically
 Think about the iPhone port - phonegap, unity, etc?

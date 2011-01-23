@@ -21,17 +21,10 @@ div#logo, #txt {
   text-shadow: 0px 0px 18px #fff;
 }
 
-#score {
-  color: #000;
-  font-size: 2em;
-  text-shadow: 0px 0px 5px #000;
-}
-
 #stats {
   width: 256px;
   font-size: 0.5em;
   font-weight: bold;
-  text-transform: uppercase;
   text-shadow: 0px 0px 24px #fff;
   position: absolute;
   bottom: 0px;
@@ -42,6 +35,8 @@ div#logo, #txt {
   position: absolute;
   top: 5px;
   right: 5px;
+  font-weight: bold;
+  text-shadow: 0px 0px 18px #fff;
 }
 
 #loading {
@@ -52,15 +47,13 @@ div#logo, #txt {
 }
 
 .dot {
-  border: 1px solid yellow;
-  width: 15px;
-  height: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: yellow;
+  background-color: #ffff99;
+  //border: 1px solid #ffff66;
+  //-webkit-box-shadow: #fbfbfb 0px 0px 50px;
+  //-moz-box-shadow:0 0 50px #fbfbfb;
 }
 
 .player1 {
-  border: 2px solid orange;
+  border: 2px solid red;
   background-color: orange;
 }
