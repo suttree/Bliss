@@ -1,6 +1,9 @@
 Differing shades of orange, and yellow for each dot
 The rigging idea, etc...
 - blinkenlights!
+-- use the gold colour from troisen
+
+players div - active and inactive divs inside?
 
 Draw lines between players as they join in
 Make the player1 and dot class a tiny heaxagon/diamond with the blur effect behind it

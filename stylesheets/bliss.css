@@ -47,10 +47,10 @@ div#logo, #txt {
 }
 
 .dot {
-  background-color: #ffff99;
-  //border: 1px solid #ffff66;
-  //-webkit-box-shadow: #fbfbfb 0px 0px 50px;
-  //-moz-box-shadow:0 0 50px #fbfbfb;
+  background-color: yellow;
+  border: 1px solid yellow;
+  -webkit-box-shadow: #fbfbfb 0px 0px 100px;
+  -moz-box-shadow:0 0 100px #fbfbfb;
 }
 
 .player1 {
