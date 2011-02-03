@@ -176,6 +176,14 @@ players[10] = {
   lon: 0.21680831909179688
 }
 
+// And here's Mark Dagget snowed in, in New York City
+players.labels.push(11);
+players[11] = {
+  id: 11,
+  lat: -73.964003,
+  lon: 40.773503
+}
+
 server = http.createServer(function(req, res){ 
   res.writeHead(200, {'Content-Type': 'text/html'}); 
   res.write('<h1>bliss</h1>'); 
