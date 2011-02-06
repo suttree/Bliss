@@ -1,5 +1,6 @@
 Randomly add players and remove them from the game, demo mode/attract mode
 Fix co-ords for h6r, he's on the right and should be on the left I think...
+Better fonts - http://awesome-fontstacks.com/
 Work on outbreaks, get them working again.
 Draw lines between the pieces of the network affected by checkins and outbreaks
 
