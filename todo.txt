@@ -5,3 +5,6 @@ Draw lines between the pieces of the network affected by checkins and outbreaks
 
 Think musically
 Think about the iPhone port - phonegap, unity, etc?
+
+Misc
+- http://jonobr1.github.com/GUI-DAT/
