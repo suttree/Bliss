@@ -11,6 +11,7 @@ var pidfile = fs.openSync("/var/tmp/node-" + node_env + ".pid", "w");
 fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
+//var demo = require(__dirname + '/lib/demo');
 var nlog = require(__dirname + '/lib/logging');
 var nearest = require(__dirname + '/lib/nearest');
 
@@ -33,10 +34,10 @@ function removePlayer(id) {
 function handleEvent(id, type, message, client) {
   log("<"+id+"> handling " + type);
 
-  if (type == 'location') {
-    return handleLocation(id, message, client);
-  } else if (type == 'connection') {
+  if (type == 'connection') {
     return handleConnection(id, message);
+  } else if (type == 'location') {
+    return handleLocation(id, message, client);
   } else if (type == 'disconnection') {
     return handleDisconnection(id, message);
   } else if (type == 'stats') {
