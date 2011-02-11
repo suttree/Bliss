@@ -1,5 +1,12 @@
-Randomly add players and remove them from the game, demo mode/attract mode
+Randomly add players and remove them from the game, demo mode/attract mode - to see the idea in action
+  Using lat/lon co-ordinates from here - http://www.doogal.co.uk/london_postcodes.php
 Fix co-ords for h6r, he's on the right and should be on the left I think...
+  lat: -73.964003,
+  lon: 40.773503
+Co-ords for me, at the centre
+  lat: 51.5324989, 
+  lon: -0.1057899
+Stop animating dots which are inactive after 5 minutes or so
 Better fonts - http://awesome-fontstacks.com/
 Work on outbreaks, get them working again.
 Draw lines between the pieces of the network affected by checkins and outbreaks
@@ -9,3 +16,15 @@ Think about the iPhone port - phonegap, unity, etc?
 
 Misc
 - http://jonobr1.github.com/GUI-DAT/
+
+Brain dump
+- opposite of foursquare
+- visualise the network, what does london look like to foursquare?
+- disruptive checkings
+- ripples through the network
+- outbreaks and co-operative gaming (pandemic)
+- ballardian death echo
+- peak activity, energised atoms, bringing the network to life
+- generative music
+- musical, ring-tone like notifications
+- beautiful but passive, low interactivity, little output
