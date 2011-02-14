@@ -47,7 +47,9 @@ div#logo, #txt {
 }
 
 .dot {
-  background-color: #FEA621;
+  background-color: #abcdef;
+  //border: 1px solid #abcdef;
+  //background-color: #FEA621;
   //border: 1px solid yellow;
   //-webkit-box-shadow: #fbfbfb 0px 0px 100px;
   //-moz-box-shadow:0 0 100px #fbfbfb;
