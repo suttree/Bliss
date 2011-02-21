@@ -42,6 +42,8 @@ function handleEvent(id, type, message, client) {
     return handleDisconnection(id, message);
   } else if (type == 'stats') {
     return handleStats(id, message);
+  } else if (type == 'touch') {
+    return handleTouch(id, message);
   } else {
     return JSON.stringify({
       error: "Don't know how to handle 'type'" + type,
@@ -88,14 +90,24 @@ function outbreak(id, players, client, disrupt, threshold) {
   var len = nearby_players.length;
   for (var i = 0; i < len; i++) {  
     player_id = nearby_players[i]['id']
-    //client.send(current_status(player_id, 'score', players[player_id]));
+    var touch = handleEvent(client.sessionId, 'touch', false, client);
+    client.send(touch);
+    client.broadcast(touch);
 
     // Propagate out through the network if we have disrupted enough neighbours
     if (len >= threshold) {
       log('Would recurse into outbreak for ' + player_id);
-      //outbreak(player_id, players, client, disrupt, threshold);
+      outbreak(player_id, players, client, disrupt, threshold);
     }
   }
+}
+
+function handleTouch(id, message) {
+  var response = {
+    id: id,
+    type: 'touch'
+  }
+  return JSON.stringify(response);
 }
 
 function handleStats(id, message) {

@@ -8,6 +8,7 @@ Co-ords for me, at the centre
   lon: -0.1057899
 Stop animating dots which are inactive after 5 minutes or so
 Better fonts - http://awesome-fontstacks.com/
+- or http://www.google.com/webfonts?subset=latin
 Work on outbreaks, get them working again.
 Draw lines between the pieces of the network affected by checkins and outbreaks
 
