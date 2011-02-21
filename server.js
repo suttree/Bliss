@@ -90,14 +90,19 @@ function outbreak(id, players, client, disrupt, threshold) {
   var len = nearby_players.length;
   for (var i = 0; i < len; i++) {  
     player_id = nearby_players[i]['id']
-    var touch = handleEvent(client.sessionId, 'touch', false, client);
+
+    //if (player_id == id) {
+    //  continue; // Skip yourself
+    //}
+
+    var touch = handleEvent(player_id, 'touch', false, client);
     client.send(touch);
     client.broadcast(touch);
 
     // Propagate out through the network if we have disrupted enough neighbours
     if (len >= threshold) {
       log('Would recurse into outbreak for ' + player_id);
-      outbreak(player_id, players, client, disrupt, threshold);
+      //outbreak(player_id, players, client, disrupt, threshold);
     }
   }
 }
