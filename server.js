@@ -103,10 +103,12 @@ function outbreak(id, players, client, affected_players, disrupt, threshold) {
   // Disrupt each of your neighbours
   var len = nearby_players.length;
   for (var i = 0; i < len; i++) {  
-    if (!player_id) {
+    if (!nearby_players[i]) {
       log('Skipping - undefined player');
       continue;
     }
+
+    player_id = nearby_players[i]['id']
 
     // Skip players we have already disrupted
     if (affected_players.indexOf(player_id) > -1) {
@@ -120,7 +122,6 @@ function outbreak(id, players, client, affected_players, disrupt, threshold) {
     }
 
     log(' Disrupting: ' + JSON.stringify(nearby_players[i]));
-    player_id = nearby_players[i]['id']
 
     affected_players.push(player_id);
 
