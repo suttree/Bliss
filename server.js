@@ -68,19 +68,33 @@ function handleLocation(id, message, client) {
     lon: message.lon,
   }
 
-  outbreak(id, players, client)
+  handleOutbreak(id, players, client)
 
   return current_status(id, 'location', players);
 }
 
+// Wrapper to run the recursive outbreak function
+// with some safeguards to make sure we don't crash
+function handleOutbreak(id, players, client) {
+  var disrupt = 3 // number of players to disrupt
+  var threshold = 3 // number of times to recurse
+
+  var affected_players = [];
+  outbreak(id, players, client, affected_players, disrupt, threshold);
+  affected_players = [];
+}
+
 // Find the nearest neighbours
 // Lather, rinse, repeat for each subsequent player over the threshold
-function outbreak(id, players, client, disrupt, threshold) {
-  disrupt = disrupt || 3
-  threshold = threshold || 3
+function outbreak(id, players, client, affected_players, disrupt, threshold) {
+
+  if (threshold <= 0) {
+    log('Quitting recursive loop');
+    return;
+  }
 
   players = nearest.create_geoHash(players);
-  nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the three nearest to you
+  nearby_players = nearest.find_nearest_player(players[id], players, disrupt); // disrupt the 'x' players nearest you
 
   log('Running outbreak for ' + id);
   log('Nearby players hash: ' + JSON.stringify(nearby_players));
@@ -89,20 +103,36 @@ function outbreak(id, players, client, disrupt, threshold) {
   // Disrupt each of your neighbours
   var len = nearby_players.length;
   for (var i = 0; i < len; i++) {  
+    if (!player_id) {
+      log('Skipping - undefined player');
+      continue;
+    }
+
+    // Skip players we have already disrupted
+    if (affected_players.indexOf(player_id) > -1) {
+      log('Skipping - already seen this player: ' + player_id);
+      continue;
+    }
+
+    if (player_id == id) {
+      log('Skipping yourself: ' + player_id);
+      continue; // Skip yourself
+    }
+
+    log(' Disrupting: ' + JSON.stringify(nearby_players[i]));
     player_id = nearby_players[i]['id']
 
-    //if (player_id == id) {
-    //  continue; // Skip yourself
-    //}
+    affected_players.push(player_id);
 
     var touch = handleEvent(player_id, 'touch', false, client);
     client.send(touch);
     client.broadcast(touch);
 
     // Propagate out through the network if we have disrupted enough neighbours
-    if (len >= threshold) {
-      log('Would recurse into outbreak for ' + player_id);
-      //outbreak(player_id, players, client, disrupt, threshold);
+    if (len >= disrupt) {
+      threshold = threshold - 1;
+      log('Would recurse into outbreak for ' + player_id + ' with threshold of ' + threshold);
+      outbreak(player_id, players, client, affected_players, disrupt, threshold);
     }
   }
 }
