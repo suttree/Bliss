@@ -26,7 +26,6 @@ div#logo, #txt {
 div#leon {
   font-size: 0.5em;
   font-weight: normal;
-  font-style: italic;
   padding-left: 0.5em;
   text-shadow: 0px 0px 25px #fbfbfb;
 }  
@@ -35,7 +34,6 @@ div#leon {
   width: 256px;
   font-size: 0.25em;
   font-weight: normal;
-  font-style: italic;
   text-shadow: 0px 0px 24px #fff;
   position: absolute;
   bottom: 0px;
