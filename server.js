@@ -12,7 +12,6 @@ fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
 var nlog = require(__dirname + '/lib/logging');
-//var demo = require(__dirname + '/lib/demo');
 var nearest = require(__dirname + '/lib/nearest');
 
 function log(message) {
