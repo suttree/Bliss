@@ -1,12 +1,11 @@
 body {
   /*background-image:url('../images/bg/hex-flip.jpg');*/
-  background-image:url('../images/bg/Wonderful_day_by_Anna_kokoro.jpeg');
   /*background-image:url('../images/bg/Hadrian__s_Wall_Countryside_by_Fireflowerlass.jpeg');*/
+  background-image:url('../images/bg/Wonderful_day_by_Anna_kokoro.jpeg');
   background-position: top left;
   background-repeat: none;
   color: #efefef;
   font-size: 1.5em;
-  font-family: "tenby-five-1","tenby-five-2", tahoma, geneva, sans-serif;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
   height: auto;
   width: auto;
