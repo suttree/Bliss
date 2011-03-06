@@ -67,7 +67,7 @@ function handleLocation(id, message, client) {
     lon: message.lon,
   }
 
-  handleOutbreak(id, players, client)
+  handleOutbreak(id, players, client);
 
   return current_status(id, 'location', players);
 }
