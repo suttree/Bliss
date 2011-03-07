@@ -88,8 +88,8 @@ function handleOutbreak(id, players, client) {
 function outbreak(id, players, client, affected_players, disrupt, threshold) {
 
   if (threshold <= 0) {
-    log('Quitting recursive loop');
-    return;
+    log('Quitting recursive loop?');
+    // return;
   }
 
   players = nearest.create_geoHash(players);
@@ -115,12 +115,13 @@ function outbreak(id, players, client, affected_players, disrupt, threshold) {
       continue;
     }
 
+    // Skip yourself
     if (player_id == id) {
       log('Skipping yourself: ' + player_id);
-      continue; // Skip yourself
+      continue;
     }
 
-    log(' Disrupting: ' + JSON.stringify(nearby_players[i]));
+    log('Disrupting: ' + JSON.stringify(nearby_players[i]));
 
     affected_players.push(player_id);
 
