@@ -1,10 +1,17 @@
+/* 1, 4, 7, 8, 10, 15 */
+/*
+3441323499_d04e48ebc7_o
+69046268_7bde272452_o
+269994168_6923a7b368_o
+269994117_cc0d5fe262_o
+3968854018_0d7ddab652_o
+243467519_13fff04542_o
+*/
 body {
-  /*background-image:url('../images/bg/hex-flip.jpg');*/
-  /*background-image:url('../images/bg/Hadrian__s_Wall_Countryside_by_Fireflowerlass.jpeg');*/
+  background-image:url('../images/bg/243467519_13fff04542_o.jpg');
   /*background-image:url('../images/bg/Wonderful_day_by_Anna_kokoro.jpeg');*/
   background-position: top left;
-  background-image:url('../images/bg/mosaic_4.jpg');
-  /*background-repeat: none;*/
+  background-repeat: none;
   color: #efefef;
   font-size: 1.5em;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
