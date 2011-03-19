@@ -76,7 +76,7 @@ function handleLocation(id, message, client) {
 // with some safeguards to make sure we don't crash
 function handleOutbreak(id, players, client) {
   var disrupt = 3 // number of players to disrupt
-  var threshold = 3 // number of times to recurse
+  var threshold = 4 // number of times to recurse
 
   var affected_players = [];
   outbreak(id, players, client, affected_players, disrupt, threshold);

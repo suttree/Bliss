@@ -1,9 +1,10 @@
 body {
-  background-image:url('../images/bg/hex-flip.jpg');
+  /*background-image:url('../images/bg/hex-flip.jpg');*/
   /*background-image:url('../images/bg/Hadrian__s_Wall_Countryside_by_Fireflowerlass.jpeg');*/
   /*background-image:url('../images/bg/Wonderful_day_by_Anna_kokoro.jpeg');*/
   background-position: top left;
-  background-repeat: none;
+  background-image:url('../images/bg/mosaic_4.jpg');
+  /*background-repeat: none;*/
   color: #efefef;
   font-size: 1.5em;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
