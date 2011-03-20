@@ -12,6 +12,7 @@ body {
   /*background-image:url('../images/bg/Wonderful_day_by_Anna_kokoro.jpeg');*/
   background-position: top left;
   background-repeat: none;
+  background-size: 100%;
   color: #efefef;
   font-size: 1.5em;
   font-family: "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
