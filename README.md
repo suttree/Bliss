@@ -7,4 +7,4 @@ I want to create a location-based game where every check-in disrupts the network
 
 I think we're entering an acute period of self awareness, perhaps that is why I want to soften the edges, a smear across the lens.
 
-![alt text](https://github.com/suttree/Bliss/blob/master/bliss.png?raw=true)
+![Image of Bliss](https://github.com/suttree/Bliss/blob/master/bliss.png?raw=true)
